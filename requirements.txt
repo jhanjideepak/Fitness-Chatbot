@@ -1,0 +1,16 @@
+langchain
+langchain-community==0.3.14
+chromadb
+unstructured
+sentence-transformers
+unstructured[pdf]
+unstructured[doc]
+chromadb
+langchain-groq
+python-dotenv
+streamlit
+pandas
+numpy
+open-clip-torch
+PyPDF2
+watchdog
