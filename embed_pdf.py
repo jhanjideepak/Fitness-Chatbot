@@ -7,6 +7,8 @@ import PyPDF2
 from langchain_groq.chat_models import ChatGroq
 import os
 from dotenv import load_dotenv
+import docx
+
 load_dotenv()
 # directory = "Data/pdf_data"
 api_key = os.getenv("GROQ_API_KEY")
@@ -23,6 +25,14 @@ def load_pdf_text_pypdf2(file_path):
             text += page.extract_text() or ""
     return text
 
+# Function to read docx file as well
+def read_docx(file_path):
+    doc = docx.Document(file_path)
+    text = []
+    for paragraph in doc.paragraphs:
+        if paragraph.text.strip():
+            text.append(paragraph.text.strip())
+    return " ".join(text)
 
 def create_embeddings_for_new_pdfs(directory, persist_directory):
     """
@@ -30,8 +40,14 @@ def create_embeddings_for_new_pdfs(directory, persist_directory):
     """
     documents = []
     for pdf_file in Path(directory).glob("*.pdf"):
+
         text = load_pdf_text_pypdf2(pdf_file)
         documents.append(Document(page_content=text, metadata={"source": str(pdf_file)}))
+
+    # Process DOCX files
+    for docx_file in Path(directory).glob("*.docx"):
+        text = read_docx(docx_file)
+        documents.append(Document(page_content=text, metadata={"source": str(docx_file)}))
 
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=200, chunk_overlap=20)
     docs = text_splitter.split_documents(documents)

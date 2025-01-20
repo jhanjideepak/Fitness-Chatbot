@@ -14,3 +14,4 @@ numpy
 open-clip-torch
 PyPDF2
 watchdog
+python-docx

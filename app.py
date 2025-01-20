@@ -21,6 +21,7 @@ from langchain.schema import HumanMessage, AIMessage
 load_dotenv()
 warnings.filterwarnings("ignore")
 
+# Get key from env
 api_key = os.getenv("GROQ_API_KEY")
 llm = ChatGroq(model_name="llama-3.1-70b-versatile", api_key=api_key)
 
@@ -173,8 +174,6 @@ def respond_to_user(user_input: str):
                                                return_source_documents=True)
 
         # Handle user query
-        # user_input = st.text_input("Enter your query:", key="user_query_input")
-        # if st.button("Submit", key="submit_button"):
         if not memory.chat_memory.messages:
             # First query: process without prior memory
             query = f"You are a helpful AI Assistant. You have expertise in health and fitness domain. Your Job is to generate output based on the query. Requirement: {user_input}"
@@ -209,47 +208,7 @@ def respond_to_user(user_input: str):
                 # Reset memory to start a new conversation
                 memory.chat_memory.clear()
                 conversation.run(input=user_input)
-        #
-        # question = "You are a helpfull AI Assistant. Your Job is to generate output based on the query."
-        # query = question + " Requirement: " + user_input
-        #
-        # # Run QA Chain
-        # llm_response = qa_chain(query)
-        #
-        # # Check if the LLM's response indicates missing information
-        # response_content = llm_response["result"]
-        # if "does not contain information" in response_content.lower() or "no relevant information" in response_content.lower():
-        #     # Fall back to LLM for a general response
-        #     fallback_prompt = f"""
-        #     {question}
-        #     Unfortunately, the retrieved documents do not provide the required information for the query:
-        #     "{user_input}"
-        #     Please generate a helpful response using your own knowledge. Do not answer more than 100 words
-        #     """
-        #     fallback_response = llm.invoke(fallback_prompt).content
-        #     st.write(f"Response from LLM (Fallback): {fallback_response}")
-        # else:
-        #     # If relevant information is found, use the original response
-        #     st.write(response_content)
 
-    # else:
-    #     # Check if memory has prior context
-    #     if memory.chat_memory and memory.chat_memory.messages:
-    #         print("Memory before constructing prompt:", memory.chat_memory.messages)
-    #         print("Memory object ID:", id(memory))
-    #
-    #         # Build a structured prompt using memory context
-    #         previous_context = "\n".join(
-    #             [f"{msg.role}: {msg.content}" for msg in memory.chat_memory.messages]
-    #         )
-    #         prompt = f"""
-    #             The following is the context of the conversation so far:
-    #             {previous_context}
-    #
-    #             The user has asked: "{user_input}".
-    #
-    #             Based on the context above, provide a relevant and helpful response to the user's query.
-    #             """
     else:
         print("Going to else for first query")
         # Generic prompt for first interaction
