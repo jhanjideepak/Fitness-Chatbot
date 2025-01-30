@@ -23,7 +23,7 @@ warnings.filterwarnings("ignore")
 
 # Get key from env
 api_key = os.getenv("GROQ_API_KEY")
-llm = ChatGroq(model_name="llama-3.1-70b-versatile", api_key=api_key)
+llm = ChatGroq(model_name="llama-3.3-70b-specdec", api_key=api_key)
 
 df = pd.read_csv('/Users/deepakjhanji/Downloads/kahunas/MultiRAGChatbot/Fitness-Chatbot/Data/csv_data/dailyActivity_merged.csv')
 
